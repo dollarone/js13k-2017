@@ -1,0 +1,79 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>responsiveTouchGameFramework</title>
+<canvas id=a width=device-width height=1000></canvas>
+<textarea id=i cols=20 rows=10></textarea>
+<script>
+onresize=onrotate=b=>{
+  b=a.getBoundingClientRect();
+  canvas_size=b.width;canvas_left=b.left;canvas_top=b.top;
+  /* your resize/rotate code here: */
+  i.value+="canvas " + canvas_size + " " + canvas_left + " " + canvas_top + "\n";
+};
+let mouse_x = 0
+let mouse_y = 0
+update_mouse=e=>{
+ 	if (e.pageX == undefined) {
+ 	  if (e.changedTouches != undefined && e.changedTouches[0] != undefined) {
+		mouse_x = e.changedTouches[0].pageX
+ 		mouse_y = e.changedTouches[0].pageY
+
+ 	  }
+ 	}
+ 	else {
+ 		mouse_x = e.pageX
+ 		mouse_y = e.pageY
+ 	}
+
+      mouse_x = ~~((mouse_x-canvas_left)*1000/canvas_size)
+      mouse_y = ~~((mouse_y)*1000/canvas_size)
+    
+    return [mouse_x,mouse_y];
+}
+onclick=e=>{
+  [click_x,click_y]=update_mouse(e);
+  /* your click code here */
+  i.value+="click " + click_x + " " + click_y + "\n";
+  i.scrollTop = i.scrollHeight;
+};
+onmousedown=ontouchstart=e=>{
+  [down_x,down_y]=update_mouse(e);
+  /* your mousedown code here: */
+  i.value+="down " + down_x + " " + down_y + "\n";
+  i.scrollTop = i.scrollHeight;
+};
+onmousemove=ontouchmove=e=>{
+  [move_x,move_y]=update_mouse(e);
+  /* your mousemove code here: */
+  i.value+="move " + move_x + " " + move_y + "\n";
+  i.scrollTop = i.scrollHeight;
+};
+onmouseup=ontouchend=e=>{
+  [up_x,up_y]=update_mouse(e);
+  /* your mouseup code here: */
+  i.value+="up " + up_x + " " + up_y + "\n";
+  i.scrollTop = i.scrollHeight;
+};
+onload=e=>{
+  onresize();
+  /* your onload code here */
+  i.value+="load \n";
+  i.scrollTop = i.scrollHeight;
+}
+</script>
+<style>
+  *{position:fixed}
+  #a{width:100vmin;top:50%;left:50%;transform:translateX(-50%)translateY(-50%);background:#def}
+  #i{position:absolute;z-index:2}
+</style>
+
+<!-- 
+Square canvas (1000 * 1000 px), always centered and adjusted to the screen, even when the screen is resized / rotated. (see variables canvas_size, canvas_left and canvas_top; the canvas id is a)
+Click and touch events update the variables click_x, click_y, down_x, down_y, move_x, move_y, up_x and up_y with values between 0 and 1000.
+To handle your own mouse/touch inputs, just add your code at the end of these functions:
+a.onclick=e=>{ ... }
+a.onmousedown=ontouchstart=e=>{ ... }
+a.onmousemove=ontouchmove=e=>{ ... }
+a.onmouseup=ontouchend=e=>{ ... }
+-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
