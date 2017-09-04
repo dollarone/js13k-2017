@@ -1,13 +1,12 @@
 "use strict"
 
-class Soldier {
-	constructor(particleManager) {
-		this.particleManager = particleManager
+class Lamp {
+	constructor() {
 		let canvas = document.getElementById('a')
 		this.context = canvas.getContext('2d')
 		this.x = -1
 		this.y = canvas.height / 2
-		this.radius = 3
+		this.radius = canvas.height / 1000 * 30
 		this.update = this.update.bind(this)
 		this.render = this.render.bind(this)
 		this.damage = this.damage.bind(this)
@@ -21,13 +20,12 @@ class Soldier {
 		this.hurtCountdown = 0
 		this.hurtCountdownSteps = 2
 		this.unit = "soldier"
-		this.speed = 2
 	}
 
 	update() {
 		if (this.dead == false) {
 			this.step++
-			this.x += this.speed
+			this.x+= 0.4
 			if (this.hurtCountdown == 1) {
 				this.currentColour = this.colour
 				this.hurtCountdown -= 1
@@ -51,8 +49,6 @@ class Soldier {
 		this.hp -= dmg
 		if (this.hp == 0) {
 			this.dead = true
-			this.particleManager.explode(this.x,this.y,this.radius*3,3,70)
-
 		}
 		this.hurt()
 	}
@@ -63,4 +59,4 @@ class Soldier {
 	}
 }
 
-export default Soldier
+export default Lamp

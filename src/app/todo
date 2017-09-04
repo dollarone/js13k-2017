@@ -1,0 +1,25 @@
+animate circles?
+add basic music
+add sound effects/drums
+some kind of path, suggest standard tower defense thing?
+
+DONE
+make a base with crash-effect that triggers on touch (with timeout)
+add tougher enemy
+
+
+
+THOUGHTS
+maybe start of with set towers, challenge is to "solve the beat". then a few levels like that, can't build anything
+then (if time) can add a different challenge where you can build and place towers, and perhaps the beat is set? and you can upgrade the beat by paying.
+focus on first. 
+but what about paths? nothing stopping me from having angled movement. perhaps start with everyone from left?
+
+some kind of
+  _________________
+ /
+/
+                YOU (main base? crash?)
+\
+ \_________________
+level
