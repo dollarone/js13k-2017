@@ -1,37 +1,69 @@
 "use strict"
 
 class Lamp {
-	constructor() {
+	constructor(type, pos, player) {
 		let canvas = document.getElementById('a')
 		this.context = canvas.getContext('2d')
+		this.player = player
 		this.x = -1
-		this.y = canvas.height / 2
-		this.radius = canvas.height / 1000 * 30
+		this.y = -1
+		this.radius = 30
+		this.maxRadius = this.radius
 		this.update = this.update.bind(this)
 		this.render = this.render.bind(this)
-		this.damage = this.damage.bind(this)
-		this.hurt = this.hurt.bind(this)
+		this.hit = this.hit.bind(this)
+		this.click = this.click.bind(this)
 		this.step = 0
 		this.dead = false
-		this.hp = 1
+		this.pos = pos
+
+		this.activeBeat = -1
+
 		this.colour = '#733'
-		this.hurtColour = '#955'
+		this.beatColour = '#433B67'//'#605885'//pink'#F493F2'
+		this.backColour = '#000'
 		this.currentColour = this.colour
-		this.hurtCountdown = 0
-		this.hurtCountdownSteps = 2
-		this.unit = "soldier"
+
+		if (type == "hihat") {
+			this.hitColourInBeat = '#EC47E0' // '#B94CE1'
+			this.hitColour = '#C500C0' //'#991CB1'
+			this.colour = '#9600CD'
+			this.cost = 10000
+			this.upkeep = 1
+		}
+		else if (type == "snare") {
+			this.hitColourInBeat = '#21FF76' //'#B564E3'
+			this.hitColour = '#00B947' //'#A554D3'
+			//this.colour = '#A442DC'
+			this.cost = 20000
+			this.upkeep = 2
+		}
+		else if (type == "bass") {
+			this.hitColourInBeat = '#00B5EC' //'#605884'
+			this.hitColour = '#4D4DFF' //'#504874'
+			//this.colour = '#504874'
+			this.cost = 30000
+			this.upkeep = 3
+
+		}
 	}
 
-	update() {
+	update(beat) {
 		if (this.dead == false) {
 			this.step++
-			this.x+= 0.4
-			if (this.hurtCountdown == 1) {
-				this.currentColour = this.colour
-				this.hurtCountdown -= 1
+			if (this.pos == beat) {
+				if (this.hit(beat)) {
+					this.currentColour = this.hitColourInBeat
+				}
+				else {
+					this.currentColour = this.beatColour
+				}
 			}
-			if (this.hurtCountdown > 1) {
-				this.hurtCountdown -= 1
+			else if(this.activeBeat > -1) {
+				this.currentColour = this.hitColour
+			}
+			else { 
+				this.currentColour = this.backColour
 			}
 		}
 	}
@@ -45,17 +77,28 @@ class Lamp {
 	    }
 	}
 
-	damage(dmg) {
-		this.hp -= dmg
-		if (this.hp == 0) {
-			this.dead = true
+	hit(beat) {
+		if (this.activeBeat == beat) {
+			return true
 		}
-		this.hurt()
+		else {
+			return false
+		}
 	}
 
-	hurt() {
-		this.currentColour = this.hurtColour
-		this.hurtCountdown = this.hurtCountdownSteps
+	click(beat) {
+		if (this.activeBeat == -1) {
+			if (this.player.money >= this.cost) {
+				this.activeBeat = beat
+				this.currentColour = this.hitColour
+				this.player.money -= this.cost
+			}
+		}
+		else {
+			this.activeBeat = -1
+			this.currentColour = this.backColour
+			this.player.money += this.cost/2
+		}
 	}
 }
 

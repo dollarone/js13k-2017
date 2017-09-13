@@ -1,11 +1,11 @@
 "use strict"
 
 class Particle {
-	constructor() {
+	constructor(col) {
 		let canvas = document.getElementById('a')
 		this.context = canvas.getContext('2d')
 
-		this.colour = '#911'
+		this.colour = col
 		this.x = -1
 		this.y = -1
 		this.direction = 0
